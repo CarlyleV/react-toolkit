@@ -1,0 +1,23 @@
+semi: true
+trailingComma: all
+singleQuote: true
+jsxSingleQuote: true
+bracketSpacing: true
+bracketSameLine: false
+jsxBracketSameLine: false
+singleAttributePerLine: true
+arrowParens: always
+quoteProps: as-needed
+withNodeModules: true
+htmlWhitespaceSensitivity: css
+experimentalTernaries: true
+overrides:
+  - files:
+      - '*.ts'
+      - '*.tsx'
+    options:
+      parser: typescript
+  - files: '*.scss'
+    options:
+      parser: scss
+      singleQuote: false
