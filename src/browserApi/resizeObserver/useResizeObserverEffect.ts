@@ -57,13 +57,15 @@ export const useResizeObserverEffect = <
   callbackRef.current = callback;
 
   useEffect(() => {
+    if (target.current === null) {
+      return;
+    }
+
     const observer = new ResizeObserver((es, o) => {
       callbackRef.current(es[0], o);
     });
 
-    if (target.current !== null) {
-      observer.observe(target.current, options);
-    }
+    observer.observe(target.current, options);
 
     return () => {
       observer.disconnect();
