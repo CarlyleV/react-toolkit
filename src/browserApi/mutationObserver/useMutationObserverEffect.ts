@@ -57,13 +57,15 @@ export const useMutationObserverEffect = <
   callbackRef.current = callback;
 
   useEffect(() => {
+    if (target.current === null) {
+      return;
+    }
+
     const observer = new MutationObserver((ms, o) => {
       callbackRef.current(ms[0], o);
     });
 
-    if (target.current !== null) {
-      observer.observe(target.current, options);
-    }
+    observer.observe(target.current, options);
 
     return () => {
       observer.disconnect();
