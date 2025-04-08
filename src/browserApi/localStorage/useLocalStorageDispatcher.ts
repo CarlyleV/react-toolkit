@@ -1,45 +1,26 @@
 /**
- * Custom Hook: useIntersectionObserverEffect
+ * Custom Hook: useLocalStorageDispatcher
  *
- * Subscribes to an `IntersectionObserver` for a target element and triggers a callback whenever the intersection state changes.
- * This hook manages the lifecycle of the `IntersectionObserver` and ensures proper cleanup.
+ * Provides utility functions to interact with `localStorage` while dispatching a `StorageEvent` to notify other parts of the application about changes.
  *
- * @template T - A `RefObject` pointing to the target HTML element to observe.
- * @param callback - A function to be executed whenever the intersection state of the target element changes.
- * @param dependencies - Dependency array for the hook. The effect will re-run if any dependency changes.
- * @param target - A `RefObject` of the element to be observed.
- * @param options - Optional configuration options for the `IntersectionObserver` (e.g., `root`, `rootMargin`, `threshold`).
+ * @template T - The type of the value to be stored in `localStorage`.
+ * @param key - The key under which the value will be stored in `localStorage`.
+ * @param stringify - An optional function to serialize the value before storing it. Defaults to `JSON.stringify`.
+ * @returns An object containing two functions:
+ *          - `set`: Stores a value in `localStorage` and dispatches a `StorageEvent`.
+ *          - `remove`: Removes the value from `localStorage` and dispatches a `StorageEvent`.
  *
  * @example
- * const myRef = useRef<HTMLDivElement>(null);
- * useIntersectionObserverEffect(
- *   (entry, observer) => {
- *     if (entry.isIntersecting) {
- *       console.log('Element is in view!');
- *     } else {
- *       console.log('Element is out of view!');
- *     }
- *   },
- *   [],
- *   myRef,
- *   { threshold: 0.5 }
- * );
+ * const { set, remove } = useLocalStorageDispatcher<string>('my-key');
+ *
+ * // Store a value
+ * set('Hello, world!');
+ *
+ * // Remove the value
+ * remove();
  *
  * @note
- * To ensure proper dependency management, configure ESLint with the following rule:
- *
- * ```json
- * {
- *   "rules": {
- *     "react-hooks/exhaustive-deps": [
- *       "warn",
- *       {
- *         "additionalHooks": "(useIntersectionObserverEffect)"
- *       }
- *     ]
- *   }
- * }
- * ```
+ * This hook is useful for scenarios where you need to synchronize `localStorage` changes across different browser tabs or windows.
  */
 export const useLocalStorageDispatcher = <T>(
   key: string,
