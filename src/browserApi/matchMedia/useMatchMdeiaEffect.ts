@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 
 export type MatchMediaEffectCallback = (
   event: MediaQueryListEvent,
-) => void | (() => void);
+) => void | Promise<void>;
 
 /**
  * Custom Hook: useMatchMediaEffect
@@ -53,14 +53,14 @@ export const useMatchMediaEffect = (
 
   useEffect(() => {
     const mediaQueryList = window.matchMedia(query);
-    callbackRef.current(
+    void callbackRef.current(
       new MediaQueryListEvent('change', {
         matches: mediaQueryList.matches,
         media: mediaQueryList.media,
       }),
     );
     const onChange = (e: MediaQueryListEvent) => {
-      callbackRef.current(e);
+      void callbackRef.current(e);
     };
     mediaQueryList.addEventListener('change', onChange);
 

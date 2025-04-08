@@ -3,7 +3,7 @@ import { useEffect, useRef, type DependencyList, type RefObject } from 'react';
 export type MutationObserverEffectCallback = (
   mutations: MutationRecord,
   observer: MutationObserver,
-) => void;
+) => void | Promise<void>;
 
 /**
  * Custom Hook: useMutationObserverEffect
@@ -62,7 +62,7 @@ export const useMutationObserverEffect = <
     }
 
     const observer = new MutationObserver((ms, o) => {
-      callbackRef.current(ms[0], o);
+      void callbackRef.current(ms[0], o);
     });
 
     observer.observe(target.current, options);

@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 type ScreenOrientationEffectCallback = (orientation: {
   angle: ScreenOrientation['angle'];
   type: ScreenOrientation['type'];
-}) => void;
+}) => void | Promise<void>;
 
 /**
  * Custom Hook: useScreenOrientationEffect
@@ -49,7 +49,7 @@ export const useScreenOrientationEffect = (
 
   useEffect(() => {
     const onChange = () => {
-      callbackRef.current({
+      void callbackRef.current({
         angle: window.screen.orientation.angle,
         type: window.screen.orientation.type,
       });

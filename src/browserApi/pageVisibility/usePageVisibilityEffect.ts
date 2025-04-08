@@ -1,7 +1,9 @@
 import type { DependencyList } from 'react';
 import { useEffect, useRef } from 'react';
 
-type PageVisibilityEffectCallback = (isVisible: boolean) => void;
+type PageVisibilityEffectCallback = (
+  isVisible: boolean,
+) => void | Promise<void>;
 
 /**
  * Custom Hook: usePageVisibilityEffect
@@ -49,9 +51,9 @@ export const usePageVisibilityEffect = (
   callbackRef.current = callback;
 
   useEffect(() => {
-    callbackRef.current(document.visibilityState === 'visible');
+    void callbackRef.current(document.visibilityState === 'visible');
     const onChange = () => {
-      callbackRef.current(document.visibilityState === 'visible');
+      void callbackRef.current(document.visibilityState === 'visible');
     };
 
     document.addEventListener('visibilitychange', onChange);

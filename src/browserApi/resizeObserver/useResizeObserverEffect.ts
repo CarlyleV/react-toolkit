@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 export type ResizeObserverEffectCallback = (
   entry: ResizeObserverEntry,
   observer: ResizeObserver,
-) => void;
+) => void | Promise<void>;
 
 /**
  * Custom Hook: useResizeObserverEffect
@@ -62,7 +62,7 @@ export const useResizeObserverEffect = <
     }
 
     const observer = new ResizeObserver((es, o) => {
-      callbackRef.current(es[0], o);
+      void callbackRef.current(es[0], o);
     });
 
     observer.observe(target.current, options);

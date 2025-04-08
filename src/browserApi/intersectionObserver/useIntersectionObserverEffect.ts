@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 export type IntersectionObserverEffectCallback = (
   entry: IntersectionObserverEntry,
   observer: IntersectionObserver,
-) => void;
+) => void | Promise<void>;
 
 /**
  * Custom Hook: useIntersectionObserverEffect
@@ -61,13 +61,15 @@ export const useIntersectionObserverEffect = <
   callbackRef.current = callback;
 
   useEffect(() => {
+    if (target.current === null) {
+      return;
+    }
+
     const observer = new IntersectionObserver((es, o) => {
-      callbackRef.current(es[0], o);
+      void callbackRef.current(es[0], o);
     }, options);
 
-    if (target.current !== null) {
-      observer.observe(target.current);
-    }
+    observer.observe(target.current);
 
     return () => {
       observer.disconnect();

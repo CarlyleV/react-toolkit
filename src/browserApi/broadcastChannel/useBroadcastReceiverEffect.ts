@@ -5,7 +5,9 @@ import {
 } from '@/browserApi/broadcastChannel/store.ts';
 import { useEffect, useRef, type DependencyList } from 'react';
 
-type BroadcastReceiverEffectCallback<T> = (message: MessageEvent<T>) => void;
+type BroadcastReceiverEffectCallback<T> = (
+  message: MessageEvent<T>,
+) => void | Promise<void>;
 
 /**
  * Custom Hook: useBroadcastReceiverEffect
@@ -55,7 +57,7 @@ export const useBroadcastReceiverEffect = <T>(
     createBroadcastChannel(channel);
 
     const onMessage = (message: MessageEvent<T>) => {
-      callbackRef.current(message);
+      void callbackRef.current(message);
     };
 
     addBroadcastChannelListener(channel, onMessage);
